@@ -1,0 +1,11 @@
+genrule(
+    name = "dummy",
+    outs = ["dummy.sh"],
+    cmd = "echo 'echo \"hello world\"' > $@",
+    executable = True,
+)
+
+sh_test(
+    name = "dummy_test",
+    srcs = [":dummy"],
+)
