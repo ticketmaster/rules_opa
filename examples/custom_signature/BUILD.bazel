@@ -1,0 +1,15 @@
+load("@rules_opa//opa:defs.bzl", "opa_library")
+load("@rules_python//python:defs.bzl", "py_binary")
+
+opa_library(
+    name = "custom_signature",
+    srcs = glob(["**/*.rego"]),
+    custom_signer = ":dummy_signer",
+    signing_key = "helloworld",
+    strip_prefix = package_name(),
+)
+
+py_binary(
+    name = "dummy_signer",
+    srcs = ["dummy_signer.py"],
+)

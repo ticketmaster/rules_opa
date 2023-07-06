@@ -3,11 +3,18 @@
 ## Contents
 * [Overview](#overview)
 * [Setup](#setup)
-* [protobuf support](#protobuf-support)
+* [Usage](#usage)
 
 ## Overview
 
+Wrapper rules on the opa cli.
+
 ## Setup
+
+Those dependencies must be installed in the WORKSPACE
+
+* [Skylib](https://github.com/bazelbuild/bazel-skylib)
+* [Python Rules](https://github.com/bazelbuild/rules_python)
 
 ```starlark
 load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
@@ -32,4 +39,24 @@ opa_rules_dependencies()
 opa_register_toolchains(version = OPA_VERSION)
 ```
 
-## protobuf support
+## Usage
+
+See [examples](examples) for more information
+
+```starlark
+load("@rules_opa//opa:defs.bzl", "opa_check", "opa_eval_binary", "opa_library", "opa_test")
+
+opa_library(
+    name = "simple",
+    srcs = ["main.rego"],
+    data = ["data.json"],
+    strip_prefix = package_name(),
+)
+
+opa_test(
+    name = "simple_test",
+    size = "small",
+    srcs = ["main_test.rego"],
+    bundle = ":simple",
+)
+```

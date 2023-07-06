@@ -1,0 +1,40 @@
+load("@rules_opa//opa:defs.bzl", "opa_check", "opa_eval_binary", "opa_library", "opa_test")
+
+opa_library(
+    name = "simple",
+    srcs = ["main.rego"],
+    data = ["data.json"],
+    strip_prefix = package_name(),
+)
+
+opa_library(
+    name = "simple_wasm",
+    entrypoints = ["main/allow"],
+    signing_alg = "HS256",
+    signing_key = "mysecret",
+    strip_prefix = package_name(),
+    target = "wasm",
+    deps = [":simple"],
+)
+
+opa_test(
+    name = "simple_test",
+    size = "small",
+    srcs = ["main_test.rego"],
+    bundle = ":simple",
+)
+
+opa_check(
+    name = "simple_check",
+    size = "small",
+    bundle = ":simple",
+    schema_dir = "schemas",
+    schema_files = glob(["schemas/**/*.json"]),
+)
+
+opa_eval_binary(
+    name = "check_bob",
+    bundle = ":simple",
+    input = '{"name":"bob"}',
+    query = "data.main.allow",
+)
