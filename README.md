@@ -19,24 +19,18 @@ Those dependencies must be installed in the WORKSPACE
 ```starlark
 load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
 
-RULES_OPA_SHA256=#...
-RULES_OPA_VERSION=#...
-OPA_VERSION=#...
-
 http_archive(
     name = "rules_opa",
-    sha256 = RULES_OPA_SHA256,
-    urls = [
-        "https://mirror.bazel.build/github.com/bazelbuild/rules_go/releases/download/v0.39.0/rules_go-v0.39.0.zip",
-        "https://github.com/ticketmaster/rules_opa/releases/download/%s/rules_go-%s.zip"%(RULES_OPA_VERSION,RULES_OPA_VERSION),
-    ],
+    sha256 = "510c9e0a2f556ea443a7da567d84e76b3ebc7aea48665109f35c7029d9a6d56e",
+    strip_prefix = "rules_opa-0.2.0",
+    url = "https://github.com/ticketmaster/rules_opa/archive/refs/tags/v0.2.0.tar.gz",
 )
 
 load("@rules_opa//opa:deps.bzl", "opa_register_toolchains", "opa_rules_dependencies")
 
 opa_rules_dependencies()
 
-opa_register_toolchains(version = OPA_VERSION)
+opa_register_toolchains()
 ```
 
 ## Usage
