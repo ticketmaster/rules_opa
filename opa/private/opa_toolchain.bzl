@@ -33,9 +33,13 @@ opa_toolchain = rule(
         ),
         "opa_signer": attr.label(
             executable = True,
-            # allow_single_file = True,
-            mandatory = True,
             cfg = "exec",
+            default = "//tools:opa_signer",
+        ),
+        "opa_ctx": attr.label(
+            executable = True,
+            cfg = "exec",
+            default = "//tools:opa_ctx",
         ),
     },
 )

@@ -3,9 +3,16 @@ load(":opa_library.bzl", "OpaInfo")
 def _opa_eval_binary_impl(ctx):
     exec_file = ctx.actions.declare_file("%s_exec.sh" % (ctx.label.name))
     toolchain = ctx.toolchains["//tools:toolchain_type"].opacinfo
-    runfiles = ctx.runfiles(files = [toolchain.opa] + ctx.attr.bundle[OpaInfo].file_deps.to_list())
 
-    args = []
+    if len(ctx.attr.deps) != 1:
+        fail("opa_binary only allow a single deps")
+
+    bundle = ctx.attr.deps[0][OpaInfo].bundle
+
+    runfiles = ctx.runfiles(files = [toolchain.opa, bundle])
+
+    args = ["eval", "-b", bundle.short_path]
+    suffix = ""
 
     if ctx.attr.partial:
         args.append("--partial")
@@ -13,22 +20,17 @@ def _opa_eval_binary_impl(ctx):
         args.append("--input %s" % (ctx.file.input_file.short_path))
     if ctx.attr.input:
         args.append("--stdin-input")
+        suffix = "<< 'EOF'\n%s\nEOF" % (ctx.attr.input)
     if ctx.attr.unknowns:
         args.append("--unknowns %s" % (",".join(ctx.attr.unknowns)))
 
     args.append("--format=%s" % (ctx.attr.format))
     args.append(ctx.attr.query)
 
-    ctx.actions.expand_template(
+    ctx.actions.write(
         output = exec_file,
-        template = ctx.file._template,
+        content = "%s %s %s" % (toolchain.opa.short_path, " ".join(args), suffix),
         is_executable = True,
-        substitutions = {
-            "{OPA_SHORTPATH}": toolchain.opa.short_path,
-            "{STDIN}": ctx.attr.input,
-            "{STRIP_PREFIX}": ctx.attr.bundle[OpaInfo].strip_prefix,
-            "{ARGS}": " ".join(args),
-        },
     )
 
     return [
@@ -42,7 +44,7 @@ opa_eval_binary = rule(
     implementation = _opa_eval_binary_impl,
     executable = True,
     attrs = {
-        "bundle": attr.label(
+        "deps": attr.label_list(
             providers = [OpaInfo],
             mandatory = True,
             doc = "The bundle to evaluate",

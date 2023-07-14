@@ -1,0 +1,13 @@
+load("@rules_opa//opa:defs.bzl", "opa_library")
+
+genrule(
+    name = "data",
+    outs = ["data.json"],
+    cmd = "echo '{\"hello\": \"world\"}' > $@",
+)
+
+opa_library(
+    name = "bundle",
+    data = [":data"],
+    deps = ["//examples/simple"],
+)
