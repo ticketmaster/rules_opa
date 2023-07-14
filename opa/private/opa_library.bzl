@@ -1,6 +1,9 @@
-load("@bazel_skylib//lib:paths.bzl", "paths")
-
-OpaInfo = provider("opa", fields = ["bundle", "target", "file_deps", "strip_prefix"])
+OpaInfo = provider("opa", fields = {
+    "bundle": "The bundle file",
+    "target": "The bundle target (wasm, rego or plan)",
+    "file_deps": "A depset containing all the source files",
+    "file_aliases": "A flat list of all the files with their alias in the bundle",
+})
 
 def _opa_toolchain(ctx):
     return ctx.toolchains["//tools:toolchain_type"].opacinfo
@@ -40,45 +43,48 @@ def _run_opa_signer(ctx, bundle_file, signed_bundle_file):
         executable = ctx.executable._opa_signer,
     )
 
+def _file_alias(file, strip_prefix):
+    return "%s:%s" % (file.path, file.short_path.removeprefix(strip_prefix).removeprefix("/"))
+
 def _run_opa_build(ctx, bundle_file):
     toolchain = _opa_toolchain(ctx)
+    wd = ctx.actions.declare_directory("%s_work" % (ctx.label.name))
     args = ctx.actions.args()
 
-    strip_prefix = paths.normalize(ctx.attr.strip_prefix)
-    opa_relative_path = toolchain.opa.path
-    bundle_relative_path = bundle_file.path
+    srcs = ctx.files.srcs or []
+    data = ctx.files.data or []
 
-    if strip_prefix != ".":
-        rel = [".." for _ in strip_prefix.split("/")]
-        opa_relative_path = paths.normalize("/".join(rel + [toolchain.opa.path]))
-        bundle_relative_path = paths.normalize("/".join(rel + [bundle_file.path]))
+    file_aliases = [_file_alias(file, ctx.attr.strip_prefix or "") for file in srcs + data]
 
-    args.add("build")
-    args.add("-t")
-    args.add(ctx.attr.target)
-    args.add("-o")
-    args.add("%s" % (bundle_relative_path))
+    for dep in ctx.attr.deps:
+        file_aliases.extend(dep[OpaInfo].file_aliases)
+
+    args.add("-d").add(wd.path)
+    args.add("-o").add(bundle_file, format = "%s:bundle.tar.gz")
+    args.add("-i").add_all(file_aliases).add("--")
+    args.add(toolchain.opa).add("build")
+    args.add("-t").add(ctx.attr.target)
+    args.add("-o").add("bundle.tar.gz")
 
     if ctx.attr.optimize:
         args.add(ctx.attr.optimize, format = "--optimize=%s")
 
     for entrypoint in ctx.attr.entrypoints:
-        args.add(entrypoint, format = "-e %s")
+        args.add("-e").add(entrypoint)
 
     args.add(".")
 
-    srcs = ctx.files.srcs if ctx.files.srcs else []
-    data = ctx.files.data if ctx.files.data else []
-
-    ctx.actions.run_shell(
+    ctx.actions.run(
+        executable = ctx.executable._opa_ctx,
         inputs = depset(srcs + data, transitive = [d[OpaInfo].file_deps for d in ctx.attr.deps]),
-        outputs = [bundle_file],
+        outputs = [bundle_file, wd],
         arguments = [args],
         tools = [toolchain.opa],
         progress_message = "Bundling policies",
         mnemonic = "OpaBuild",
-        command = "cd %s && %s $@" % (strip_prefix, opa_relative_path),
     )
+
+    return file_aliases
 
 def _opa_library_impl(ctx):
     if ctx.attr.target == "wasm" and len(ctx.attr.entrypoints) == 0:
@@ -86,7 +92,7 @@ def _opa_library_impl(ctx):
 
     bundle_file = ctx.actions.declare_file("%s.tar.gz" % (ctx.attr.name))
 
-    _run_opa_build(ctx, bundle_file)
+    file_aliases = _run_opa_build(ctx, bundle_file)
 
     output_files = [bundle_file]
 
@@ -97,13 +103,13 @@ def _opa_library_impl(ctx):
         _run_opa_signer(ctx, bundle_file, signed_bundle_file)
         output_files = [signed_bundle_file] + output_files
 
-    srcs = ctx.files.srcs if ctx.files.srcs else []
-    data = ctx.files.data if ctx.files.data else []
+    srcs = ctx.files.srcs or []
+    data = ctx.files.data or []
 
     return [
         OpaInfo(
             bundle = bundle_file,
-            strip_prefix = paths.normalize(ctx.attr.strip_prefix),
+            file_aliases = file_aliases,
             target = ctx.attr.target,
             file_deps = depset(srcs + data, transitive = [d[OpaInfo].file_deps for d in ctx.attr.deps]),
         ),
@@ -169,6 +175,11 @@ wasm    The wasm target emits a bundle containing a WebAssembly module compiled 
         # AssertionError: Cannot find .runfiles directory for bazel-out/darwin-opt-exec-2B5CBBC6/bin/tools/opa_signer
         "_opa_signer": attr.label(
             default = "//tools:opa_signer",
+            executable = True,
+            cfg = "exec",
+        ),
+        "_opa_ctx": attr.label(
+            default = "//tools:opa_ctx",
             executable = True,
             cfg = "exec",
         ),

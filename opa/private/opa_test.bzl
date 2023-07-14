@@ -2,18 +2,24 @@ load(":opa_library.bzl", "OpaInfo")
 
 def _opa_test_impl(ctx):
     toolchain = ctx.toolchains["//tools:toolchain_type"].opacinfo
-    tester_file = ctx.actions.declare_file("%s_tester.sh" % (ctx.label.name))
-    bundle = ctx.attr.bundle[OpaInfo]
-    runfiles = ctx.runfiles(files = ctx.files.srcs + [toolchain.opa] + bundle.file_deps.to_list())
+    test_file = ctx.actions.declare_file("%s_test.sh" % (ctx.label.name))
+
+    if len(ctx.attr.deps) != 1:
+        fail("opa_test only allow a single deps")
+
+    bundle = ctx.attr.deps[0][OpaInfo].bundle
+
+    runfiles = ctx.runfiles(files = [toolchain.opa, bundle] + ctx.files.srcs)
 
     ctx.actions.write(
-        output = tester_file,
-        content = "%s test -v %s" % (toolchain.opa.short_path, bundle.strip_prefix),
+        output = test_file,
+        content = "%s test %s %s" % (toolchain.opa.short_path, bundle.short_path, " ".join([f.short_path for f in ctx.files.srcs])),
+        is_executable = True,
     )
 
     return [
         DefaultInfo(
-            executable = tester_file,
+            executable = test_file,
             runfiles = runfiles,
         ),
     ]
@@ -27,7 +33,7 @@ opa_test = rule(
             mandatory = True,
             doc = "Rego files to test",
         ),
-        "bundle": attr.label(
+        "deps": attr.label_list(
             providers = [OpaInfo],
             doc = "The bundle to test",
         ),

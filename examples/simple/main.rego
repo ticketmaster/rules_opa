@@ -9,3 +9,5 @@ import future.keywords
 allow if {
 	input.name in data.admins
 }
+
+#
