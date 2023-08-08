@@ -43,3 +43,5 @@ opa_eval_binary(
     query = "data.main.allow",
     deps = [":simple"],
 )
+
+exports_files(["schemas/input.json"])
