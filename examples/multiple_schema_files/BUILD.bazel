@@ -1,0 +1,19 @@
+load("@rules_opa//opa:defs.bzl", "opa_check", "opa_library")
+
+opa_library(
+    name = "multiple_schema_files",
+    srcs = ["main.rego"],
+    strip_prefix = package_name(),
+    visibility = ["//examples:__subpackages__"],
+)
+
+opa_check(
+    name = "multiple_schema_files_check",
+    size = "small",
+    bundle = ":multiple_schema_files",
+    schema_files = [
+        "//examples/simple:schemas/input.json",
+        ":admins.json",
+    ],
+    strict = True,
+)

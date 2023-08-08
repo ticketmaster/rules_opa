@@ -14,11 +14,7 @@ def _opa_check_test_impl(ctx):
     if ctx.files.schema_files:
         files.extend(ctx.files.schema_files)
 
-    runfiles = ctx.runfiles(
-        files = files,
-    )
-
-    args = []
+    args = ["set -xe\n"]
 
     args.append(toolchain.opa.short_path)
     args.append("check")
@@ -29,17 +25,25 @@ def _opa_check_test_impl(ctx):
         args.append("-s")
         args.append("%s/" % (ctx.file.schema_dir.short_path))
     elif ctx.files.schema_files:
-        for f in ctx.files.schema_files:
-            args.append("-s")
-            args.append(f.short_path)
+        args.insert(1, "schema_dir=`mktemp -d`\n")
+        args.insert(2, "cp %s $schema_dir\n" % (" ".join([f.short_path for f in ctx.files.schema_files])))
+        args.append("-s")
+        args.append("$schema_dir")
 
     if ctx.file.capabilities:
         args.append("--capabilities")
         args.append(ctx.file.capabilities.short_path)
 
+    if ctx.attr.strict:
+        args.append("--strict")
+
     ctx.actions.write(
         output = tester_file,
         content = " ".join(args),
+    )
+
+    runfiles = ctx.runfiles(
+        files = files,
     )
 
     return [
@@ -70,6 +74,9 @@ _opa_check_test = rule(
         "protos": attr.label_list(
             providers = [ProtoInfo],
             doc = "Protobuf definition to generate json schemas",
+        ),
+        "strict": attr.bool(
+            doc = "enable compiler strict mode",
         ),
         "capabilities": attr.label(
             doc = "set capabilities.json file path",
