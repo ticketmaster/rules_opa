@@ -72,10 +72,6 @@ opa_eval_binary = rule(
             allow_single_file = True,
             doc = "input",
         ),
-        "_template": attr.label(
-            default = Label("opa_eval.sh.tpl"),
-            allow_single_file = True,
-        ),
     },
     toolchains = ["//tools:toolchain_type"],
 )
