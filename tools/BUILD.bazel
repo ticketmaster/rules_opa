@@ -13,6 +13,11 @@ py_binary(
     visibility = ["//visibility:public"],
 )
 
+py_binary(
+    name = "opa_upgrade",
+    srcs = ["opa_upgrade.py"],
+)
+
 toolchain_type(name = "toolchain_type")
 
 opa_toolchain(

@@ -2,15 +2,16 @@
 from dataclasses import dataclass
 from argparse import ArgumentParser
 from subprocess import run, PIPE, STDOUT
+from typing import List, Optional
 import os
 import sys
 
 
 @dataclass
 class Args:
-    output: str | None
-    inputs: list[str]
-    command: list[str]
+    output: Optional[str]
+    inputs: List[str]
+    command: List[str]
     wd: str
 
 
@@ -43,7 +44,7 @@ def chdir():
         os.chdir(user_dir)
 
 
-def split_once_or_double(s: str, delimiter: str) -> list[str]:
+def split_once_or_double(s: str, delimiter: str) -> List[str]:
     parts = s.split(delimiter, 1)
 
     return parts if len(parts) == 2 else [s, s]
