@@ -21,9 +21,9 @@ load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
 
 http_archive(
     name = "rules_opa",
-    sha256 = "510c9e0a2f556ea443a7da567d84e76b3ebc7aea48665109f35c7029d9a6d56e",
-    strip_prefix = "rules_opa-0.2.0",
-    url = "https://github.com/ticketmaster/rules_opa/archive/refs/tags/v0.2.0.tar.gz",
+    sha256 = "<SHA256>",
+    strip_prefix = "rules_opa-<VERSION>",
+    url = "https://github.com/ticketmaster/rules_opa/archive/refs/tags/<VERSION>.tar.gz",
 )
 
 load("@rules_opa//opa:deps.bzl", "opa_register_toolchains", "opa_rules_dependencies")
@@ -53,4 +53,12 @@ opa_test(
     srcs = ["main_test.rego"],
     bundle = ":simple",
 )
+```
+
+## Upgrade
+
+To upgrade the opa version, run the following command
+
+```shell
+bazel run -- //tools:opa_upgrade --version <version>
 ```
