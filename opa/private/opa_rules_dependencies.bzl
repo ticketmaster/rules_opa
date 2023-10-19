@@ -5,7 +5,6 @@ _OPA_SHA256 = {
     "0.54.0": {
         "opa_darwin_amd64": "a33e829306cd2210ed743da7f4f957588ea350a184bb6ecbb7cbfd77ae7ca401",
         "opa_darwin_arm64_static": "74500746e5faf0deb60863f1a3d1e3eed96006ff8183940f1c13f1a47969059d",
-        "opa_linux_amd64": "63c29426db9cf1a2584fcb65c08519cb52077d832933a02c31292555ff6dc3b3",
         "opa_linux_amd64_static": "633829141f8d6706ac24e0b84393d7730a975a17cc4a15790bf7fad959a28ec3",
         "opa_linux_arm64_static": "883e22c082508e2f95ba25333559ba8a5c38c9c5ef667314e132c9d8451450d8",
         "opa_windows_amd64": "25284b69e1dd7feaa17446e49b1085b61dca0b496dc868304153eb64b422c7eb",
@@ -17,7 +16,6 @@ _OPA_SHA256 = {
 _SUPPORTED_PLATFORMS = [
     "opa_darwin_amd64",
     "opa_darwin_arm64_static",
-    "opa_linux_amd64",
     "opa_linux_amd64_static",
     "opa_linux_arm64_static",
     "opa_windows_amd64",
@@ -40,7 +38,7 @@ def opa_rules_dependencies(
             url = "https://github.com/open-policy-agent/opa/releases/download/v%s/%s%s" % (version, bin, extname),
             sha256 = sha256,
             executable = 1,
-            downloaded_file_path = "opa",
+            downloaded_file_path = "opa%s" % extname,
         )
 
     maybe(

@@ -85,6 +85,7 @@ def main():
     if args.output:
         file, alias = split_once_or_double(args.output, ":")
         copy_file(os.path.join(args.wd, alias), file)
+        os.chmod(file, 0o644)
 
 
 if __name__ == "__main__":
