@@ -3,6 +3,7 @@ from tarfile import TarFile, TarInfo, open as taropen
 from subprocess import run, PIPE,STDOUT
 from dataclasses import dataclass
 from io import BytesIO
+from typing import List
 import sys
 import os
 
@@ -12,7 +13,7 @@ class Args:
     output: str
     signing_key: str
     signing_alg: str
-    command: list[str]
+    command: List[str]
 
 def parse_args() -> Args:
     parser = ArgumentParser(prog="rules_opa::opa_signer", description="Tool to re-bundle an opa bundle with a signature file")
