@@ -19,7 +19,7 @@ opa_toolchain(
     name = "opa_linux_amd64",
     builtin_metadata_json = "@opa_builtin_metadata_json//file",
     capabilities_json = "@opa_capabilities_json//file",
-    opa = "@opa_linux_amd64//file",
+    opa = "@opa_linux_amd64_static//file",
     visibility = ["//visibility:public"],
 )
 
