@@ -1,0 +1,3 @@
+bazel_dep(name = "bazel_skylib", version = "1.5.0")
+
+bazel_dep(name = "rules_python", version = "0.27.1")
