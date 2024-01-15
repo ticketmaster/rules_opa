@@ -1,4 +1,4 @@
-load("@rules_opa//opa:defs.bzl", "opa_binary", "opa_check", "opa_eval_binary", "opa_library", "opa_test")
+load("@rules_opa//opa:defs.bzl", "opa_binary", "opa_check", "opa_eval", "opa_eval_binary", "opa_library", "opa_test")
 
 opa_library(
     name = "simple",
@@ -39,6 +39,14 @@ opa_check(
 
 opa_eval_binary(
     name = "check_bob",
+    input = '{"name":"bob"}',
+    query = "data.main.allow",
+    deps = [":simple"],
+)
+
+opa_eval(
+    name = "check_bob_json",
+    out = "bob.json",
     input = '{"name":"bob"}',
     query = "data.main.allow",
     deps = [":simple"],

@@ -1,48 +1,53 @@
 load(":opa_library.bzl", "OpaInfo")
 
-def _opa_eval_binary_impl(ctx):
-    exec_file = ctx.actions.declare_file("%s_exec.sh" % (ctx.label.name))
+def _opa_eval_impl(ctx):
     toolchain = ctx.toolchains["//tools:toolchain_type"].opacinfo
+    out_file = ctx.actions.declare_file(ctx.attr.out)
 
     if len(ctx.attr.deps) != 1:
-        fail("opa_eval_binary only allow a single deps")
+        fail("opa_eval only allow a single deps")
 
     bundle = ctx.attr.deps[0][OpaInfo].bundle
+    additional_inputs = []
 
-    runfiles = ctx.runfiles(files = [toolchain.opa, bundle])
+    args = ctx.actions.args()
 
-    args = ["eval", "-b", bundle.short_path]
-    suffix = ""
+    args.add(toolchain.opa)
+    args.add("eval")
+    args.add("-b").add(bundle)
 
     if ctx.attr.partial:
-        args.append("--partial")
+        args.add("--partial")
     if ctx.file.input_file:
-        args.append("--input %s" % (ctx.file.input_file.short_path))
+        additional_inputs.append(ctx.file.input_file)
+        args.add("--input").add(ctx.file.input_file)
     if ctx.attr.input:
-        args.append("--stdin-input")
-        suffix = "<< 'EOF'\n%s\nEOF" % (ctx.attr.input)
+        input_file = ctx.actions.declare_file(ctx.label.name + "_input.txt")
+        ctx.actions.write(output = input_file, content = ctx.attr.input)
+        additional_inputs.append(input_file)
+        args.add("--input").add(input_file)
     if ctx.attr.unknowns:
-        args.append("--unknowns %s" % (",".join(ctx.attr.unknowns)))
+        args.add("--unknowns").add(",".join(ctx.attr.unknowns))
 
-    args.append("--format=%s" % (ctx.attr.format))
-    args.append(ctx.attr.query)
+    args.add("--format=%s" % (ctx.attr.format))
+    args.add(ctx.attr.query)
 
-    ctx.actions.write(
-        output = exec_file,
-        content = "%s %s %s" % (toolchain.opa.short_path, " ".join(args), suffix),
-        is_executable = True,
+    ctx.actions.run_shell(
+        tools = [toolchain.opa],
+        inputs = [bundle] + additional_inputs,
+        outputs = [out_file],
+        arguments = [args],
+        command = "$@ > " + out_file.path,
     )
 
     return [
         DefaultInfo(
-            executable = exec_file,
-            runfiles = runfiles,
+            files = depset([out_file]),
         ),
     ]
 
-opa_eval_binary = rule(
-    implementation = _opa_eval_binary_impl,
-    executable = True,
+opa_eval = rule(
+    implementation = _opa_eval_impl,
     attrs = {
         "deps": attr.label_list(
             providers = [OpaInfo],
@@ -52,6 +57,10 @@ opa_eval_binary = rule(
         "query": attr.string(
             mandatory = True,
             doc = "The query to evaluate",
+        ),
+        "out": attr.string(
+            mandatory = True,
+            doc = "Output file name",
         ),
         "format": attr.string(
             default = "json",
