@@ -59,7 +59,13 @@ def opa_rules_dependencies(
 
     Args:
         version: version of the opa release to use
+
+    Returns:
+        List of direct dependencies
     """
+
+    direct_deps = []
+
     for bin in _SUPPORTED_PLATFORMS:
         extname = ".exe" if bin.startswith("opa_windows") else ""
         sha256 = _OPA_SHA256[version][bin]
@@ -72,6 +78,8 @@ def opa_rules_dependencies(
             executable = 1,
             downloaded_file_path = "opa%s" % extname,
         )
+
+        direct_deps.append(bin)
 
     maybe(
         http_file,
@@ -88,3 +96,10 @@ def opa_rules_dependencies(
         sha256 = _OPA_SHA256[version]["opa_builtin_metadata_json"],
         downloaded_file_path = "builtin_metadata.json",
     )
+
+    direct_deps.extend([
+        "opa_capabilities_json",
+        "opa_builtin_metadata_json",
+    ])
+
+    return direct_deps
