@@ -6,6 +6,8 @@ bazel_dep(name = "rules_python", version = "0.29.0")
 
 bazel_dep(name = "rules_proto", version = "6.0.0-rc2")
 
+bazel_dep(name = "platforms", version = "0.0.8")
+
 register_toolchains(
     "@rules_opa//tools:opa_linux_amd64_toolchain",
     "@rules_opa//tools:opa_linux_arm64_toolchain",
