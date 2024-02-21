@@ -1,6 +1,6 @@
 {
   "lockFileVersion": 3,
-  "moduleFileHash": "36acff1e784a7dc0d3131a847e987ce180a588fcb9c6680a44b805a07453335d",
+  "moduleFileHash": "8b2b1bade5f478574e420334d7725e113351b92acc96fd55eb1db7f97ebeb042",
   "flags": {
     "cmdRegistries": [
       "https://bcr.bazel.build/"
@@ -22,7 +22,13 @@
       "key": "<root>",
       "repoName": "rules_opa",
       "executionPlatformsToRegister": [],
-      "toolchainsToRegister": [],
+      "toolchainsToRegister": [
+        "@rules_opa//tools:opa_linux_amd64_toolchain",
+        "@rules_opa//tools:opa_linux_arm64_toolchain",
+        "@rules_opa//tools:opa_darwin_amd64_toolchain",
+        "@rules_opa//tools:opa_darwin_arm64_toolchain",
+        "@rules_opa//tools:opa_windows_amd64_toolchain"
+      ],
       "extensionUsages": [],
       "deps": {
         "bazel_skylib": "bazel_skylib@1.5.0",

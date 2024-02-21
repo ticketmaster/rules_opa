@@ -5,3 +5,11 @@ bazel_dep(name = "bazel_skylib", version = "1.5.0")
 bazel_dep(name = "rules_python", version = "0.29.0")
 
 bazel_dep(name = "rules_proto", version = "6.0.0-rc2")
+
+register_toolchains(
+    "@rules_opa//tools:opa_linux_amd64_toolchain",
+    "@rules_opa//tools:opa_linux_arm64_toolchain",
+    "@rules_opa//tools:opa_darwin_amd64_toolchain",
+    "@rules_opa//tools:opa_darwin_arm64_toolchain",
+    "@rules_opa//tools:opa_windows_amd64_toolchain",
+)
