@@ -1,5 +1,5 @@
-load("//opa:defs.bzl", "opa_toolchain")
 load("@rules_python//python:defs.bzl", "py_binary")
+load("//opa:defs.bzl", "opa_toolchain")
 
 py_binary(
     name = "opa_signer",
@@ -66,10 +66,7 @@ toolchain(
         "@platforms//os:linux",
         "@platforms//cpu:x86_64",
     ],
-    target_compatible_with = [
-        "@platforms//os:linux",
-        "@platforms//cpu:x86_64",
-    ],
+    target_compatible_with = [],
     toolchain = ":opa_linux_amd64",
     toolchain_type = ":toolchain_type",
     visibility = ["//visibility:public"],
@@ -81,10 +78,7 @@ toolchain(
         "@platforms//os:linux",
         "@platforms//cpu:arm64",
     ],
-    target_compatible_with = [
-        "@platforms//os:linux",
-        "@platforms//cpu:arm64",
-    ],
+    target_compatible_with = [],
     toolchain = ":opa_linux_arm64",
     toolchain_type = ":toolchain_type",
     visibility = ["//visibility:public"],
@@ -96,10 +90,7 @@ toolchain(
         "@platforms//os:osx",
         "@platforms//cpu:x86_64",
     ],
-    target_compatible_with = [
-        "@platforms//os:osx",
-        "@platforms//cpu:x86_64",
-    ],
+    target_compatible_with = [],
     toolchain = ":opa_macos_amd64",
     toolchain_type = ":toolchain_type",
     visibility = ["//visibility:public"],
@@ -111,10 +102,7 @@ toolchain(
         "@platforms//os:macos",
         "@platforms//cpu:arm64",
     ],
-    target_compatible_with = [
-        "@platforms//os:macos",
-        "@platforms//cpu:arm64",
-    ],
+    target_compatible_with = [],
     toolchain = ":opa_macos_arm64",
     toolchain_type = ":toolchain_type",
     visibility = ["//visibility:public"],
@@ -126,10 +114,7 @@ toolchain(
         "@platforms//os:windows",
         "@platforms//cpu:x86_64",
     ],
-    target_compatible_with = [
-        "@platforms//os:windows",
-        "@platforms//cpu:x86_64",
-    ],
+    target_compatible_with = [],
     toolchain = ":opa_windows_amd64",
     toolchain_type = ":toolchain_type",
     visibility = ["//visibility:public"],
