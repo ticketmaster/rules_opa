@@ -99,7 +99,7 @@ toolchain(
 toolchain(
     name = "opa_darwin_arm64_toolchain",
     exec_compatible_with = [
-        "@platforms//os:macos",
+        "@platforms//os:osx",
         "@platforms//cpu:arm64",
     ],
     target_compatible_with = [],
