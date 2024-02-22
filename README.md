@@ -16,6 +16,20 @@ Those dependencies must be installed in the WORKSPACE
 * [Skylib](https://github.com/bazelbuild/bazel-skylib)
 * [Python Rules](https://github.com/bazelbuild/rules_python)
 
+bzlmod usage (until it's available in the registry)
+
+```starlark
+bazel_dep(name = "rules_opa", version = <version>)
+
+git_override(
+    module_name = "rules_opa",
+    commit = <commit>,
+    remote = "https://github.com/ticketmaster/rules_opa",
+)
+```
+
+Legacy workspace
+
 ```starlark
 load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
 
