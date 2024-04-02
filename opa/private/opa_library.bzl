@@ -184,7 +184,7 @@ wasm    The wasm target emits a bundle containing a WebAssembly module compiled 
 def opa_library(*, name, srcs = [], data = [], **kwargs):
     if len(data) > 0:
         # buildifier: disable=print
-        print("\rWARNING: The data attribute is now discouraged here because files are needed at compile time. Please use srcs to bundle json files")
+        print("\rWARNING: The data attribute is now deprecated in opa_library because files are needed at compile time. Please use srcs to bundle json files")
 
     opa_library_rule(
         name = name,
