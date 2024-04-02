@@ -52,9 +52,8 @@ def _run_opa_build(ctx, bundle_file):
     args = ctx.actions.args()
 
     srcs = ctx.files.srcs or []
-    data = ctx.files.data or []
 
-    file_aliases = [_file_alias(file, ctx.attr.strip_prefix or "") for file in srcs + data]
+    file_aliases = [_file_alias(file, ctx.attr.strip_prefix or "") for file in srcs]
 
     for dep in ctx.attr.deps:
         file_aliases.extend(dep[OpaInfo].file_aliases)
@@ -76,7 +75,7 @@ def _run_opa_build(ctx, bundle_file):
 
     ctx.actions.run(
         executable = ctx.executable._opa_ctx,
-        inputs = depset(srcs + data, transitive = [d[OpaInfo].file_deps for d in ctx.attr.deps]),
+        inputs = depset(srcs, transitive = [d[OpaInfo].file_deps for d in ctx.attr.deps]),
         outputs = [bundle_file, wd],
         arguments = [args],
         tools = [toolchain.opa],
@@ -104,31 +103,26 @@ def _opa_library_impl(ctx):
         output_files = [signed_bundle_file] + output_files
 
     srcs = ctx.files.srcs or []
-    data = ctx.files.data or []
 
     return [
         OpaInfo(
             bundle = bundle_file,
             file_aliases = file_aliases,
             target = ctx.attr.target,
-            file_deps = depset(srcs + data, transitive = [d[OpaInfo].file_deps for d in ctx.attr.deps]),
+            file_deps = depset(srcs, transitive = [d[OpaInfo].file_deps for d in ctx.attr.deps]),
         ),
         DefaultInfo(files = depset(output_files)),
     ]
 
-opa_library = rule(
+opa_library_rule = rule(
     implementation = _opa_library_impl,
     attrs = {
         "entrypoints": attr.string_list(
             doc = "Set slash separated entrypoint path",
         ),
         "srcs": attr.label_list(
-            allow_files = [".rego"],
-            doc = "Rego files to include in the bundle",
-        ),
-        "data": attr.label_list(
-            allow_files = [".json"],
-            doc = "Data files (json) to include in the bundle",
+            allow_files = [".rego", ".json"],
+            doc = "Rego files or JSON files to include in the bundle",
         ),
         "deps": attr.label_list(
             providers = [OpaInfo],
@@ -186,3 +180,14 @@ wasm    The wasm target emits a bundle containing a WebAssembly module compiled 
     },
     toolchains = ["//tools:toolchain_type"],
 )
+
+def opa_library(*, name, srcs = [], data = [], **kwargs):
+    if len(data) > 0:
+        # buildifier: disable=print
+        print("\rWARNING: The data attribute is now discouraged here because files are needed at compile time. Please use srcs to bundle json files")
+
+    opa_library_rule(
+        name = name,
+        srcs = srcs + data,
+        **kwargs
+    )

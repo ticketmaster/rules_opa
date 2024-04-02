@@ -13,7 +13,7 @@ def _opa_binary_impl(ctx):
 
     ctx.actions.write(
         output = binary_file,
-        content = "%s run -b %s" % (toolchain.opa.short_path, bundle.short_path),
+        content = "%s run -b %s \"$@\"" % (toolchain.opa.short_path, bundle.short_path),
         is_executable = True,
     )
 

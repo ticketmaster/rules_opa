@@ -2,8 +2,10 @@ load("@rules_opa//opa:defs.bzl", "opa_binary", "opa_check", "opa_eval", "opa_eva
 
 opa_library(
     name = "simple",
-    srcs = ["main.rego"],
-    data = ["data.json"],
+    srcs = [
+        "data.json",
+        "main.rego",
+    ],
     strip_prefix = package_name(),
     visibility = ["//examples:__subpackages__"],
 )

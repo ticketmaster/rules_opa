@@ -56,8 +56,7 @@ load("@rules_opa//opa:defs.bzl", "opa_check", "opa_eval_binary", "opa_library", 
 
 opa_library(
     name = "simple",
-    srcs = ["main.rego"],
-    data = ["data.json"],
+    srcs = ["main.rego", "data.json"],
     strip_prefix = package_name(),
 )
 
