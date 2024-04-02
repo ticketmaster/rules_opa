@@ -1139,7 +1139,7 @@
   "moduleExtensions": {
     "//opa/private:extensions.bzl%internal_deps": {
       "general": {
-        "bzlTransitiveDigest": "QYwrBONyyuevrfIJLmYjhz7aC7RAoQlb97zKpAXbZxQ=",
+        "bzlTransitiveDigest": "NtdQ1msw6mPoUwdbVhOaJBkPGi/TbvVYwI9wwr8BKoY=",
         "recordedFileInputs": {},
         "recordedDirentsInputs": {},
         "envVariables": {},
@@ -1148,8 +1148,8 @@
             "bzlFile": "@@bazel_tools//tools/build_defs/repo:http.bzl",
             "ruleClassName": "http_file",
             "attributes": {
-              "url": "https://github.com/open-policy-agent/opa/releases/download/v0.60.0/opa_linux_amd64_static",
-              "sha256": "7d7cb45d9e6390646e603456503ca1232180604accc646de823e4d2c363dbeb0",
+              "url": "https://github.com/open-policy-agent/opa/releases/download/v0.63.0/opa_linux_amd64_static",
+              "sha256": "af1a9d13611974ff18c529dea3592512dd46f80a4fba95969cebccd2b0ddca64",
               "executable": true,
               "downloaded_file_path": "opa"
             }
@@ -1158,8 +1158,8 @@
             "bzlFile": "@@bazel_tools//tools/build_defs/repo:http.bzl",
             "ruleClassName": "http_file",
             "attributes": {
-              "url": "https://github.com/open-policy-agent/opa/releases/download/v0.60.0/opa_linux_arm64_static",
-              "sha256": "dd2ba13e42faa16f4a7933f80f44ee518bb96a023ea6dfb8193916a8ba134555",
+              "url": "https://github.com/open-policy-agent/opa/releases/download/v0.63.0/opa_linux_arm64_static",
+              "sha256": "0162d324e6578279072fda4a3eb69cd935a73512289135bef0c3bfe7aa1aaa2f",
               "executable": true,
               "downloaded_file_path": "opa"
             }
@@ -1168,8 +1168,8 @@
             "bzlFile": "@@bazel_tools//tools/build_defs/repo:http.bzl",
             "ruleClassName": "http_file",
             "attributes": {
-              "url": "https://github.com/open-policy-agent/opa/releases/download/v0.60.0/opa_darwin_arm64_static",
-              "sha256": "27c1209fda3a5b8d7ec158b3696246ce7d1bf3f0f08f3698a23bf7dada5a618b",
+              "url": "https://github.com/open-policy-agent/opa/releases/download/v0.63.0/opa_darwin_arm64_static",
+              "sha256": "5c707597ce6e65e74f3a01fafee0f98e6276f0f66dd3d459ebc52997adac2b0e",
               "executable": true,
               "downloaded_file_path": "opa"
             }
@@ -1178,8 +1178,8 @@
             "bzlFile": "@@bazel_tools//tools/build_defs/repo:http.bzl",
             "ruleClassName": "http_file",
             "attributes": {
-              "url": "https://github.com/open-policy-agent/opa/releases/download/v0.60.0/opa_windows_amd64.exe",
-              "sha256": "8e20b4fcd6b8094be186d8c9ec5596477fb7cb689b340d285865cb716c3c8ea7",
+              "url": "https://github.com/open-policy-agent/opa/releases/download/v0.63.0/opa_windows_amd64.exe",
+              "sha256": "eb49d9bf98ca21be55c71bf033ed4b058aa1ffdec9b182cb66ae42c007e43074",
               "executable": true,
               "downloaded_file_path": "opa.exe"
             }
@@ -1188,8 +1188,8 @@
             "bzlFile": "@@bazel_tools//tools/build_defs/repo:http.bzl",
             "ruleClassName": "http_file",
             "attributes": {
-              "url": "https://github.com/open-policy-agent/opa/releases/download/v0.60.0/opa_darwin_amd64",
-              "sha256": "1b96cb23a63700b75f670e6bca1e3f8e9e7930c29b095753a9f978ce88828fa0",
+              "url": "https://github.com/open-policy-agent/opa/releases/download/v0.63.0/opa_darwin_amd64",
+              "sha256": "236b2644541021aa7f0995fb0a0792bfb427e9a2d5417626f7c17d875f433ca6",
               "executable": true,
               "downloaded_file_path": "opa"
             }
@@ -1198,8 +1198,8 @@
             "bzlFile": "@@bazel_tools//tools/build_defs/repo:http.bzl",
             "ruleClassName": "http_file",
             "attributes": {
-              "url": "https://raw.githubusercontent.com/open-policy-agent/opa/v0.60.0/builtin_metadata.json",
-              "sha256": "2cd517a6de5b2278b43e120b31b663a9337212a53874ddfdc432651628bc3736",
+              "url": "https://raw.githubusercontent.com/open-policy-agent/opa/v0.63.0/builtin_metadata.json",
+              "sha256": "3c3bee9988c8d1d7784969a68eadd365fa9e56dd4cefe5b083de9e96f0ab431e",
               "downloaded_file_path": "builtin_metadata.json"
             }
           },
@@ -1207,8 +1207,8 @@
             "bzlFile": "@@bazel_tools//tools/build_defs/repo:http.bzl",
             "ruleClassName": "http_file",
             "attributes": {
-              "url": "https://raw.githubusercontent.com/open-policy-agent/opa/v0.60.0/capabilities.json",
-              "sha256": "c8e827c4186a3f30de7fefa3c2c9d72c8856ee10fd2890b8c41f5e351b6bfaa2",
+              "url": "https://raw.githubusercontent.com/open-policy-agent/opa/v0.63.0/capabilities.json",
+              "sha256": "4e43bd196f78e2210097e2e3bbce25512ef7783c48922be9e2ac0af8ad2fa7c8",
               "downloaded_file_path": "capabilities.json"
             }
           }

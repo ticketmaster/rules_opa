@@ -11,9 +11,14 @@ def _opa_test_impl(ctx):
 
     runfiles = ctx.runfiles(files = [toolchain.opa, bundle] + ctx.files.srcs)
 
+    args = ["--explain", ctx.attr.explain]
+
+    if ctx.attr.verbose:
+        args.append("--verbose")
+
     ctx.actions.write(
         output = test_file,
-        content = "%s test %s %s" % (toolchain.opa.short_path, bundle.short_path, " ".join([f.short_path for f in ctx.files.srcs])),
+        content = "%s test %s %s" % (toolchain.opa.short_path, bundle.short_path, " ".join(args + [f.short_path for f in ctx.files.srcs])),
         is_executable = True,
     )
 
@@ -36,6 +41,15 @@ opa_test = rule(
         "deps": attr.label_list(
             providers = [OpaInfo],
             doc = "The bundle to test",
+        ),
+        "explain": attr.string(
+            values = ["fails", "full", "notes", "debug"],
+            doc = "enable query explanations (default fails)",
+            default = "fails",
+        ),
+        "verbose": attr.bool(
+            doc = "set verbose reporting mode",
+            default = False,
         ),
     },
     toolchains = ["//tools:toolchain_type"],
