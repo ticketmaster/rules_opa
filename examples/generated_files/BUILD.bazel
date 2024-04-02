@@ -8,6 +8,6 @@ genrule(
 
 opa_library(
     name = "bundle",
-    data = [":data"],
+    srcs = [":data"],
     deps = ["//examples/simple"],
 )
