@@ -91,7 +91,7 @@ def main(argv: List[str]):
             if file in args:
                 continue  # Skip test sources
             print(f"TN:{test_name.removeprefix('@@')}", file=f)
-            print(f"SF:{file}", file=f)
+            print(f"SF:{file.removeprefix('/')}", file=f)
             print(f"FNF:0", file=f)
             print(f"FNH:0", file=f)
 
