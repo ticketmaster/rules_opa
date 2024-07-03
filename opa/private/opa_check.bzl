@@ -14,7 +14,7 @@ def _opa_check_test_impl(ctx):
     if ctx.files.schema_files:
         files.extend(ctx.files.schema_files)
 
-    args = ["set -xe\n"]
+    args = ["set -e\n"]
 
     args.append(toolchain.opa.short_path)
     args.append("check")

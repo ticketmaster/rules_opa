@@ -69,6 +69,106 @@
   },
   "selectedYankedVersions": {},
   "moduleExtensions": {
+    "//opa/private:extensions.bzl%internal_deps": {
+      "general": {
+        "bzlTransitiveDigest": "JF9i2LCJLrQQ03MfzA8kWxJRXbgfWnT73rBS6iXAkqY=",
+        "usagesDigest": "xe0f6AfCl5ChY8B+9jz8VNuqorYB5w9xjE7wtDTiun8=",
+        "recordedFileInputs": {},
+        "recordedDirentsInputs": {},
+        "envVariables": {},
+        "generatedRepoSpecs": {
+          "opa_linux_amd64_static": {
+            "bzlFile": "@@bazel_tools//tools/build_defs/repo:http.bzl",
+            "ruleClassName": "http_file",
+            "attributes": {
+              "url": "https://github.com/open-policy-agent/opa/releases/download/v0.65.0/opa_linux_amd64_static",
+              "sha256": "cd6b0b2d762571a746f0261890b155e6dd71cca90dad6b42b6fcf6dd7f619f08",
+              "executable": true,
+              "downloaded_file_path": "opa"
+            }
+          },
+          "opa_linux_arm64_static": {
+            "bzlFile": "@@bazel_tools//tools/build_defs/repo:http.bzl",
+            "ruleClassName": "http_file",
+            "attributes": {
+              "url": "https://github.com/open-policy-agent/opa/releases/download/v0.65.0/opa_linux_arm64_static",
+              "sha256": "dba53c4f4a003f5b866e316129a144423900f78093645307ab0c4d20329ccd40",
+              "executable": true,
+              "downloaded_file_path": "opa"
+            }
+          },
+          "opa_darwin_arm64_static": {
+            "bzlFile": "@@bazel_tools//tools/build_defs/repo:http.bzl",
+            "ruleClassName": "http_file",
+            "attributes": {
+              "url": "https://github.com/open-policy-agent/opa/releases/download/v0.65.0/opa_darwin_arm64_static",
+              "sha256": "3d8f7e940aa7cf13a532bd095ec5f2d61f7920588675771bfb5da63c3b60cd36",
+              "executable": true,
+              "downloaded_file_path": "opa"
+            }
+          },
+          "opa_windows_amd64": {
+            "bzlFile": "@@bazel_tools//tools/build_defs/repo:http.bzl",
+            "ruleClassName": "http_file",
+            "attributes": {
+              "url": "https://github.com/open-policy-agent/opa/releases/download/v0.65.0/opa_windows_amd64.exe",
+              "sha256": "6d0c8276487aabb10620d00d4e91d2f76c07a567edc68298ca23d1bc72b93369",
+              "executable": true,
+              "downloaded_file_path": "opa.exe"
+            }
+          },
+          "opa_darwin_amd64": {
+            "bzlFile": "@@bazel_tools//tools/build_defs/repo:http.bzl",
+            "ruleClassName": "http_file",
+            "attributes": {
+              "url": "https://github.com/open-policy-agent/opa/releases/download/v0.65.0/opa_darwin_amd64",
+              "sha256": "565435206e43a92564093ea85e4001a4a56956476f333367db792a7d693b63c0",
+              "executable": true,
+              "downloaded_file_path": "opa"
+            }
+          },
+          "opa_builtin_metadata_json": {
+            "bzlFile": "@@bazel_tools//tools/build_defs/repo:http.bzl",
+            "ruleClassName": "http_file",
+            "attributes": {
+              "url": "https://raw.githubusercontent.com/open-policy-agent/opa/v0.65.0/builtin_metadata.json",
+              "sha256": "47cff9a1f192a3d82c143bef3bc1774f0e7e6cf54a5f6a48371a48631b912424",
+              "downloaded_file_path": "builtin_metadata.json"
+            }
+          },
+          "opa_capabilities_json": {
+            "bzlFile": "@@bazel_tools//tools/build_defs/repo:http.bzl",
+            "ruleClassName": "http_file",
+            "attributes": {
+              "url": "https://raw.githubusercontent.com/open-policy-agent/opa/v0.65.0/capabilities.json",
+              "sha256": "fdcc65f878bb42838ea1a63a7904cbf67361f0f536a99a61dff11be33357fe8c",
+              "downloaded_file_path": "capabilities.json"
+            }
+          }
+        },
+        "moduleExtensionMetadata": {
+          "explicitRootModuleDirectDeps": [
+            "opa_darwin_amd64",
+            "opa_darwin_arm64_static",
+            "opa_linux_amd64_static",
+            "opa_linux_arm64_static",
+            "opa_windows_amd64",
+            "opa_capabilities_json",
+            "opa_builtin_metadata_json"
+          ],
+          "explicitRootModuleDirectDevDeps": [],
+          "useAllRepos": "NO",
+          "reproducible": false
+        },
+        "recordedRepoMappingEntries": [
+          [
+            "",
+            "bazel_tools",
+            "bazel_tools"
+          ]
+        ]
+      }
+    },
     "@@apple_support~//crosstool:setup.bzl%apple_cc_configure_extension": {
       "general": {
         "bzlTransitiveDigest": "PjIds3feoYE8SGbbIq2SFTZy3zmxeO2tQevJZNDo7iY=",
