@@ -16,9 +16,15 @@ def _opa_test_impl(ctx):
     if ctx.attr.verbose:
         args.append("--verbose")
 
+    tool_path = toolchain.opa.short_path
+
+    if ctx.configuration.coverage_enabled:
+        tool_path = "%s %s %s" % (ctx.executable._opa_coverage.short_path, str(ctx.label), tool_path)
+        runfiles = runfiles.merge(ctx.attr._opa_coverage[DefaultInfo].default_runfiles)
+
     ctx.actions.write(
         output = test_file,
-        content = "%s test %s %s" % (toolchain.opa.short_path, bundle.short_path, " ".join(args + [f.short_path for f in ctx.files.srcs])),
+        content = "%s test %s %s" % (tool_path, bundle.short_path, " ".join(args + [f.short_path for f in ctx.files.srcs])),
         is_executable = True,
     )
 
@@ -27,6 +33,7 @@ def _opa_test_impl(ctx):
             executable = test_file,
             runfiles = runfiles,
         ),
+        coverage_common.instrumented_files_info(ctx, source_attributes = ["srcs"], dependency_attributes = ["deps"]),
     ]
 
 opa_test = rule(
@@ -51,6 +58,7 @@ opa_test = rule(
             doc = "set verbose reporting mode",
             default = False,
         ),
+        "_opa_coverage": attr.label(default = "//tools:opa_coverage", executable = True, cfg = "exec"),
     },
     toolchains = ["//tools:toolchain_type"],
 )
