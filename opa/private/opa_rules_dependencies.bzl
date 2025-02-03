@@ -1,9 +1,19 @@
 load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_file")
 load("@bazel_tools//tools/build_defs/repo:utils.bzl", "maybe")
 
-DEFAULT_VERSION = "0.65.0"
+DEFAULT_VERSION = "1.1.0"
 
 _OPA_SHA256 = {
+    "1.1.0": {
+        "opa_darwin_amd64": "444e976b5f0a0035d5fa5c8ecfdd213e0bdd2d7da140a1bfc87b4f995cfee464",
+        "opa_darwin_arm64_static": "f9112728505d5c00a9f9256e54457176f0d467ddc82db6295fe00552080b403f",
+        "opa_linux_amd64": "5dfbb79c80232dd226822264f1695fd862976c23c7da197ab86af89c393dcac2",
+        "opa_linux_amd64_static": "8246c73b39f74d02cf98dc1df71227bdc4eb0ccc639ab1e9897854b4383da4e1",
+        "opa_linux_arm64_static": "bdcf9a561a8c48bb6376977e6ba8f1b77adb6433f51bb1b3d440922f78856bb4",
+        "opa_windows_amd64": "4a85ef10c51245e8e507c57e50c7bdbd9533f9f76dd9bbb01305aa37e0390258",
+        "opa_capabilities_json": "db207cb45b0a2efaac5643cdff6610fa20a875e8472a026d3819fbb0bb9da2f9",
+        "opa_builtin_metadata_json": "a53dbf0dedcc6f286550a6d4d656367791b10dc9fdb4ffd4a74649c731b56883",
+    },
     "0.65.0": {
         "opa_darwin_amd64": "565435206e43a92564093ea85e4001a4a56956476f333367db792a7d693b63c0",
         "opa_darwin_arm64_static": "3d8f7e940aa7cf13a532bd095ec5f2d61f7920588675771bfb5da63c3b60cd36",
